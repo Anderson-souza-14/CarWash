@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Veículos Concluídos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="card p-4">
+        <h2>Veículos Concluídos</h2>
+        <form method="post" action="{{ url_for('home.apagar_concluidos') }}">
+            <button type="submit" class="btn btn-danger mb-3">Apagar Histórico</button>
+            <a href="{{ url_for('home.veiculos_view') }}" class="btn btn-secondary mb-3">Voltar</a>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Marca</th><th>Modelo</th><th>Cor</th><th>Placa</th><th>Proprietário</th>
+                    <th>Hora Entrada</th><th>Tipo</th><th>Aguarda Local</th><th>Hora Saída</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for v in concluidos %}
+                <tr>
+                    <td>{{ v[1] }}</td>
+                    <td>{{ v[2] }}</td>
+                    <td>{{ v[3] }}</td>
+                    <td>{{ v[4] }}</td>
+                    <td>{{ v[5] }}</td>
+                    <td>{{ v[6] }}</td>
+                    <td>{{ v[7] }}</td>
+                    <td>{{ 'Sim' if v[8] else 'Não' }}</td>
+                    <td>{{ v[10] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-info mt-3">
+            {% for message in messages %}
+              <div>{{ message }}</div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

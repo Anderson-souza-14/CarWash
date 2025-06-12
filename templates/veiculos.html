@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Veículos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="card p-4">
+        <h2>Cadastro de Veículos</h2>        
+        <form method="post" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Marca</label>
+                <input type="text" name="marca" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Modelo</label>
+                <input type="text" name="modelo" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Cor</label>
+                <input type="text" name="cor" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Placa</label>
+                <input type="text" name="placa" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Proprietário</label>
+                <input type="text" name="proprietario" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Hora de Entrada</label>
+                <input type="time" name="hora_entrada" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tipo</label>
+                <select name="tipo" class="form-select">
+                    <option value="carro">Carro</option>
+                    <option value="moto">Moto</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Aguardar no local</label>
+                <input type="checkbox" name="aguarda_local" class="form-check-input">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Cadastrar</button>
+                <a href="{{ url_for('home.index') }}" class="btn btn-secondary">Voltar</a>
+                <a href="{{ url_for('home.concluidos') }}" class="btn btn-secondary">Ver Concluídos</a>                
+            </div>
+        </form>
+        <hr>
+        <h3>Veículos cadastrados</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Marca</th><th>Modelo</th><th>Cor</th><th>Placa</th><th>Proprietário</th>
+                    <th>Hora Entrada</th><th>Tipo</th><th>Aguarda Local</th><th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for v in veiculos %}
+                <tr>
+                    <td>{{ v[1] }}</td>
+                    <td>{{ v[2] }}</td>
+                    <td>{{ v[3] }}</td>
+                    <td>{{ v[4] }}</td>
+                    <td>{{ v[5] }}</td>
+                    <td>{{ v[6] }}</td>
+                    <td>{{ v[7] }}</td>
+                    <td>{{ 'Sim' if v[8] else 'Não' }}</td>
+                    <td>{{ v[9] }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('home.concluir_veiculo', veiculo_id=v[0]) }}">
+                            <button type="submit" class="btn btn-success btn-sm">Concluido</button>
+                        </form>"
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-info mt-3">
+            {% for message in messages %}
+              <div>{{ message }}</div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
