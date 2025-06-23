@@ -9,8 +9,50 @@
     <div class="card p-4">
         <h2>Bem-vindo, {{ usuario }}!</h2>
         <p>Você está logado.</p>
-        <a href="{{ url_for('home.veiculos_view') }}" class="btn btn-primary">Cadastrar e Gerenciar Veículos</a>
+        <a href="{{ url_for('home.veiculos_view') }}" class="btn btn-primary">Cadastrar Veículos</a>
+        <a href="{{ url_for('home.concluidos') }}" class="btn btn-secondary">Ver Concluídos</a> 
         <a href="{{ url_for('home.logout') }}" class="btn btn-danger">Sair</a>
+        <h3 class="mt-4">Veículos cadastrados</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Cor</th>
+            <th>Placa</th>
+            <th>Proprietário</th>
+            <th>Hora Entrada</th>
+            <th>Hora Retirada</th>
+            <th>Tipo</th>
+            <th>Aguarda Local</th>
+            <th>Status</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for v in veiculos %}
+        <tr {% if v[9] %}class="table-success"{% endif %} >
+            <td>{{ v[1] }}</td>
+            <td>{{ v[2] }}</td>
+            <td>{{ v[3] }}</td>
+            <td>{{ v[4] }}</td>
+            <td>{{ v[5] }}</td>
+            <td>{{ v[6] }}</td>
+            <td>{{ v[11] }}</td>
+            <td>{{ v[7]|capitalize }}</td>
+            <td>{{ 'Sim' if v[8] else 'Não' }}</td>
+            <td>{{ v[9] if v[9] else '' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('home.concluir_veiculo', veiculo_id=v[0]) }}" style="display:inline;">
+                <button type="submit" class="btn btn-success btn-sm" title="Concluir">
+                    &#10003;
+                </button>
+            </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
     </div>
 </body>
 </html>

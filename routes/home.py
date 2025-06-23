@@ -22,7 +22,21 @@ def acesso():
 def index():
     if 'usuario' not in session:
         return redirect(url_for('home.acesso'))
-    return render_template('index.html', usuario=session['usuario'])
+    mysql = current_app.mysql
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT * FROM veiculos
+    WHERE status = 'aguardando'
+    ORDER BY 
+        aguarda_local DESC,
+        CASE WHEN aguarda_local = 1 THEN hora_entrada ELSE hora_retirada END ASC,
+        CASE WHEN aguarda_local = 1 THEN id ELSE hora_entrada END ASC,
+        CASE WHEN aguarda_local = 1 THEN 0 ELSE id END ASC
+    """)
+    veiculos = cur.fetchall()
+    cur.close()
+    return render_template('index.html', usuario=session['usuario'], veiculos=veiculos)
+    
 
 @home_bp.route('/logout')
 def logout():
@@ -41,23 +55,27 @@ def veiculos_view():
         placa = request.form['placa']
         proprietario = request.form['proprietario']
         hora_entrada = request.form['hora_entrada']
+        hora_retirada = request.form['hora_retirada']
         tipo = request.form['tipo']
         aguarda_local = 1 if request.form.get('aguarda_local') == 'on' else 0 
         status = 'aguardando'
-        cur = mysql.connection.cursor()
-        cur.execute("""INSERT INTO veiculos (marca, modelo, cor, placa, proprietario, hora_entrada, tipo, aguarda_local, status)
-                       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                    (marca, modelo, cor, placa, proprietario, hora_entrada, tipo, aguarda_local, status))
-        mysql.connection.commit()
-        cur.close()
-        flash('Veículo cadastrado com sucesso!')
+        if hora_retirada < hora_entrada:
+            flash('A hora de retirada não pode ser anterior à hora de entrada!')
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("""INSERT INTO veiculos (marca, modelo, cor, placa, proprietario, hora_entrada,hora_retirada, tipo, aguarda_local, status)
+                       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    (marca, modelo, cor, placa, proprietario, hora_entrada, hora_retirada, tipo, aguarda_local, status))
+            mysql.connection.commit()
+            cur.close()
+            flash('Veículo cadastrado com sucesso!')
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM veiculos WHERE status = 'aguardando' ORDER BY hora_entrada ASC, id ASC")
     veiculos = cur.fetchall()
     cur.close()
-    return render_template('veiculos.html', veiculos=veiculos)
+    return render_template('veiculos.html', usuario=session['usuario'], veiculos=veiculos)
 
-@home_bp.route('/veiculos/concluir/<int:veiculo_id>', methods=['POST'])
+@home_bp.route('/index/concluir/<int:veiculo_id>', methods=['POST'])
 def concluir_veiculo(veiculo_id):
     if 'usuario' not in session:
         return redirect(url_for('home.acesso'))
@@ -68,7 +86,7 @@ def concluir_veiculo(veiculo_id):
     mysql.connection.commit()
     cur.close()
     flash('Serviço concluído com sucesso!')
-    return redirect(url_for('home.veiculos_view'))
+    return redirect(url_for('home.index'))
 
 @home_bp.route('/concluidos')
 def concluidos():

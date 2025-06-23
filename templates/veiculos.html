@@ -31,8 +31,11 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">Hora de Entrada</label>
-                <input type="time" name="hora_entrada" class="form-control" required>
+                <input type="time" name="hora_entrada" class="form-control" required id="hora_entrada">
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Hora de Retirada</label>
+                <input type="time" name="hora_retirada" class="form-control" required id="hora_retirada">
             <div class="col-md-4">
                 <label class="form-label">Tipo</label>
                 <select name="tipo" class="form-select">
@@ -46,41 +49,9 @@
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-success">Cadastrar</button>
-                <a href="{{ url_for('home.index') }}" class="btn btn-secondary">Voltar</a>
-                <a href="{{ url_for('home.concluidos') }}" class="btn btn-secondary">Ver Concluídos</a>                
+                <a href="{{ url_for('home.index') }}" class="btn btn-secondary">Voltar</a>                               
             </div>
-        </form>
-        <hr>
-        <h3>Veículos cadastrados</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Marca</th><th>Modelo</th><th>Cor</th><th>Placa</th><th>Proprietário</th>
-                    <th>Hora Entrada</th><th>Tipo</th><th>Aguarda Local</th><th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for v in veiculos %}
-                <tr>
-                    <td>{{ v[1] }}</td>
-                    <td>{{ v[2] }}</td>
-                    <td>{{ v[3] }}</td>
-                    <td>{{ v[4] }}</td>
-                    <td>{{ v[5] }}</td>
-                    <td>{{ v[6] }}</td>
-                    <td>{{ v[7] }}</td>
-                    <td>{{ 'Sim' if v[8] else 'Não' }}</td>
-                    <td>{{ v[9] }}</td>
-                    <td>
-                        <form method="post" action="{{ url_for('home.concluir_veiculo', veiculo_id=v[0]) }}">
-                            <button type="submit" class="btn btn-success btn-sm">Concluido</button>
-                        </form>"
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        </form>        
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <div class="alert alert-info mt-3">
@@ -91,5 +62,15 @@
           {% endif %}
         {% endwith %}
     </div>
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const entrada = document.getElementById('hora_entrada').value;
+        const retirada = document.getElementById('hora_retirada').value;
+        if (entrada && retirada && retirada < entrada) {
+            alert('A hora de retirada não pode ser anterior à hora de entrada.');
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>
