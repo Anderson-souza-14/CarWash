@@ -1,0 +1,47 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('../imagensCarWash/diferenciallavarapido.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 10%;
+    color: rgb(7, 7, 7);
+}
+
+label {
+    color: #0c0c0c;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+}
+
+.btn-custom {
+    background-color: #0069d9;
+    border: none;
+    color: rgb(12, 12, 12);
+}
+
+.btn-custom:hover {
+    background-color: #0056b3;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important; 
+    border-radius: 15px !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
