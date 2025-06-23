@@ -8,9 +8,9 @@
 <body class="container mt-5">
     <div class="card p-4">
         <h2>Veículos Concluídos</h2>
-        <form method="post" action="{{ url_for('home.apagar_concluidos') }}">
+        <form method="post" action="{{ url_for('home.apagar_concluidos') }}" onsubmit="return confirm('Tem certeza que deseja apagar todo o histórico? Esta ação não pode ser desfeita.');">
             <button type="submit" class="btn btn-danger mb-3">Apagar Histórico</button>
-            <a href="{{ url_for('home.veiculos_view') }}" class="btn btn-secondary mb-3">Voltar</a>
+            <a href="{{ url_for('home.index') }}" class="btn btn-secondary mb-3">Voltar</a>
         </form>
         <table class="table table-striped">
             <thead>
