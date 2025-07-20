@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Dashboard - Lava Rápido</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/estilo_index.css') }}" rel="stylesheet">
 </head>
 <body class="container mt-5">
     <div class="card p-4">
@@ -39,7 +40,8 @@
             <td>{{ v[5] }}</td>
             <td>{{ v[6] }}</td>
             <td>{{ v[11] }}</td>
-            <td>{{ v[7]|capitalize }}</td>
+            <td><img src="{{ url_for('static', filename='imagensCarWash/' + v[7] + '/' + v[7] + '-android-chrome-192x192.png') }}"
+                 alt="{{ v[7] }}" width="32" height="32"></td>
             <td>{{ 'Sim' if v[8] else 'Não' }}</td>
             <td>{{ v[9] if v[9] else '' }}</td>
             <td>
