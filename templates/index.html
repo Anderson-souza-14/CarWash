@@ -45,7 +45,8 @@
             <td>{{ 'Sim' if v[8] else 'Não' }}</td>
             <td>{{ v[9] if v[9] else '' }}</td>
             <td>
-                <form method="post" action="{{ url_for('home.concluir_veiculo', veiculo_id=v[0]) }}" style="display:inline;">
+                <form method="post" action="{{ url_for('home.concluir_veiculo', veiculo_id=v[0]) }}" style="display:inline;" 
+                      onsubmit="return confirm('Tem certeza que deseja concluir este serviço?');">
                 <button type="submit" class="btn btn-success btn-sm" title="Concluir">
                     &#10003;
                 </button>
